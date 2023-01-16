@@ -1,4 +1,4 @@
-import { ALL_PRODUCT_FAIL, ALL_PRODUCT_REQUEST, ALL_PRODUCT_SUCCESS, CLEAR_ERROR } from "../actionTypes/productActionTypes"
+import { ALL_PRODUCT_FAIL, ALL_PRODUCT_REQUEST, ALL_PRODUCT_SUCCESS, CLEAR_ERROR, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS } from "../actionTypes/productActionTypes"
 
 
 
@@ -20,6 +20,34 @@ export const productReducer = (state = { products: [] }, action) => {
             return {
                 loading: false,
                 error: action.payload.products
+            }
+        case CLEAR_ERROR:
+            return {
+                ...state,
+                error: null
+
+            }
+        default:
+            return state
+    }
+}
+
+export const productDetailsReducer = (state = { products: {} }, action) => {
+    switch (action.type) {
+        case PRODUCT_DETAILS_REQUEST:
+            return {
+                loading: true,
+                ...state
+            }
+        case PRODUCT_DETAILS_SUCCESS:
+            return {
+                loading: false,
+                product: action.payload
+            }
+        case PRODUCT_DETAILS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
             }
         case CLEAR_ERROR:
             return {

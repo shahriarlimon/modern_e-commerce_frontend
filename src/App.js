@@ -8,6 +8,9 @@ import Header from './components/overlays/Header/Header';
 import Home from './pages/Home/Home';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProductDetails from './pages/Product/ProductDetails';
+import Products from './pages/Products/Products';
+import Search from './pages/Products/Search';
 
 function App() {
   useEffect(() => {
@@ -21,6 +24,10 @@ function App() {
     <Header />
     <Routes>
       <Route path='/' element={<Home />} />
+      <Route path='/product/:id' element={<ProductDetails />} />
+      <Route path='/products' element={<Products />} />
+      <Route path='/products/:keyword' element={<Products />} />
+      <Route path='/search' element={<Search />} />
     </Routes>
     <ToastContainer />
     <Footer />
