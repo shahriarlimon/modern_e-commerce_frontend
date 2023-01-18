@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductDetails from './pages/Product/ProductDetails';
 import Products from './pages/Products/Products';
 import Search from './pages/Products/Search';
+import LoginSignUp from './pages/User/LoginSignUp';
 
 function App() {
   useEffect(() => {
@@ -28,6 +29,7 @@ function App() {
       <Route path='/products' element={<Products />} />
       <Route path='/products/:keyword' element={<Products />} />
       <Route path='/search' element={<Search />} />
+      <Route path='/login' element={<LoginSignUp />} />
     </Routes>
     <ToastContainer />
     <Footer />
