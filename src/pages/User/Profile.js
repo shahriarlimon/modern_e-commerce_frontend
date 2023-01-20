@@ -11,9 +11,9 @@ const Profile = () => {
     const location = useLocation();
     let from = location?.state?.from?.pathname || "/profile";
     useEffect(() => {
-       
-        if (isAuthenticated === true) {
-            navigate(from, { replace: true });
+
+        if (isAuthenticated === false) {
+            navigate("/login", { replace: true });
         }
     }, [navigate, isAuthenticated, from]);
     return (
@@ -40,7 +40,7 @@ const Profile = () => {
                             </div>
                             <div>
                                 <h4>Joined On</h4>
-                                <p>{(user?.createdAt)}</p>
+                                <p>{String(user.createdAt).substr(0, 10)}</p>
                             </div>
 
                             <div>

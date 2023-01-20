@@ -52,7 +52,7 @@ const LoginSignUp = () => {
         const user = {
             name, email, password, avatar
         }
-        dispatch(register(user))
+         dispatch(register(user)) 
     };
 
     const registerDataChange = (e) => {
@@ -77,7 +77,7 @@ const LoginSignUp = () => {
 
     useEffect(() => {
         if (isAuthenticated === true) {
-            navigate(from, { replace: true });
+            navigate("/profile");
         }
         if (error) {
             toast.error(error)

@@ -1,4 +1,4 @@
-import { LOGOUT_FAIL, LOGOUT_SUCCESS } from "../actionTypes/productActionTypes"
+import { LOGOUT_FAIL, LOGOUT_SUCCESS, UPDATE_PASSWORD_FAIL, UPDATE_PASSWORD_REQUEST, UPDATE_PASSWORD_SUCCESS } from "../actionTypes/productActionTypes"
 import { CLEAR_ERROR, LOAD_USER_FAIL, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, REGISTER_FAIL, REGISTER_REQUEST, REGISTER_SUCCESS, UPDATE_PROFILE_RESET, USER_UPDATE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS } from "../actionTypes/userActionTypes"
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -62,11 +62,13 @@ export const userReducer = (state = { user: {} }, action) => {
 export const updateProfileReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_UPDATE_REQUEST:
+        case UPDATE_PASSWORD_REQUEST:
             return {
                 ...state,
                 loading: true
             }
         case USER_UPDATE_SUCCESS:
+        case UPDATE_PASSWORD_SUCCESS:
             return {
                 ...state,
                 loading: false,
@@ -74,6 +76,7 @@ export const updateProfileReducer = (state = {}, action) => {
 
             }
         case USER_UPDATE_FAIL:
+        case UPDATE_PASSWORD_FAIL:
             return {
                 ...state,
                 loading: false,

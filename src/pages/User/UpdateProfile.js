@@ -1,11 +1,11 @@
-import React, { Fragment, useRef, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import "./UpdateProfile.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FiMail } from 'react-icons/fi'
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/overlays/Loader/Loader";
 import { FaRegUser } from 'react-icons/fa';
-import { clearErrors, loadUser, login, updateProfile } from "../../redux/actions/userAction";
+import { clearErrors, loadUser, updateProfile } from "../../redux/actions/userAction";
 import { toast } from 'react-toastify';
 import { UPDATE_PROFILE_RESET } from "../../redux/actionTypes/userActionTypes";
 import MetaData from "../../components/overlays/MetaData/MetaData";
@@ -13,7 +13,7 @@ import MetaData from "../../components/overlays/MetaData/MetaData";
 const UpdateProfile = () => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
-    const [avatar, setAvatar] = useState("/Profile.png");
+    const [avatar, setAvatar] = useState();
     const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
     const dispatch = useDispatch();
@@ -35,15 +35,16 @@ const UpdateProfile = () => {
     };
 
     const updateProfileDataChange = (e) => {
-        const reader = new FileReader();
+            const reader = new FileReader()
+            reader.onload = () => {
+                if (reader.readyState === 2) {
+                    setAvatarPreview(reader.result);
+                    setAvatar(reader.result);
+                    console.log(avatar)
+                }
+            };
+            reader.readAsDataURL(e.target.files[0]);
 
-        reader.onload = () => {
-            if (reader.readyState === 2) {
-                setAvatarPreview(reader.result);
-                setAvatar(reader.result);
-            }
-        };
-        reader.readAsDataURL(e.target.files[0]);
     };
 
 
@@ -59,6 +60,7 @@ const UpdateProfile = () => {
         if (isUpdated) {
             toast.success("User updated successfully")
             dispatch(loadUser())
+            navigate("/profile")
             dispatch({ type: UPDATE_PROFILE_RESET })
 
 

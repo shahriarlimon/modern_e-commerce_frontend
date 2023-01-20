@@ -19,6 +19,7 @@ import UserOptions from './components/overlays/Header/UserOptions';
 import Profile from './pages/User/Profile';
 import ProtectedRoute from './components/Routes/ProtectedRoute';
 import UpdateProfile from './pages/User/UpdateProfile';
+import UpdatePassword from './pages/User/UpdatePassword';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user)
@@ -44,6 +45,7 @@ function App() {
       <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
         <Route path='/profile' element={<Profile />} />
         <Route path="/update-profile" element={<UpdateProfile />} />
+        <Route path='/password/update' element={<UpdatePassword />} />
       </Route>
       {/*  <Route path="/profile" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Profile /></ProtectedRoute>} /> */}
       <Route path='/login' element={<LoginSignUp />} />

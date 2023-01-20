@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOGOUT_FAIL, LOGOUT_SUCCESS } from "../actionTypes/productActionTypes";
+import { LOGOUT_FAIL, LOGOUT_SUCCESS, UPDATE_PASSWORD_FAIL, UPDATE_PASSWORD_REQUEST, UPDATE_PASSWORD_SUCCESS } from "../actionTypes/productActionTypes";
 import { CLEAR_ERROR, LOAD_USER_FAIL, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, REGISTER_FAIL, REGISTER_REQUEST, REGISTER_SUCCESS, USER_UPDATE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS } from "../actionTypes/userActionTypes";
 /* LOGIN */
 export const login = (email, password) => async (dispatch) => {
@@ -95,6 +95,28 @@ export const updateProfile = (userData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: USER_UPDATE_FAIL,
+            payload: error.response.data.message
+        })
+    }
+
+}
+/* update PASSWORD*/
+export const updatePassword = (userData) => async (dispatch) => {
+    try {
+        dispatch({ type: UPDATE_PASSWORD_REQUEST });
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        }
+        let link = `http://localhost:5000/api/user/password/update`;
+
+        const { data } = await axios.put(link, userData, config)
+        dispatch({ type: UPDATE_PASSWORD_SUCCESS, payload: data.success })
+    } catch (error) {
+        dispatch({
+            type: UPDATE_PASSWORD_FAIL,
             payload: error.response.data.message
         })
     }
