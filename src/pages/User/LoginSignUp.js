@@ -14,7 +14,8 @@ import { toast } from 'react-toastify';
 const LoginSignUp = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation()
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/profile";
     const { error, loading, isAuthenticated } = useSelector(
         (state) => state.user
     );
@@ -52,15 +53,6 @@ const LoginSignUp = () => {
             name, email, password, avatar
         }
         dispatch(register(user))
-
-
-        /*  const myForm = new FormData();
- 
-         myForm.set("name", name);
-         myForm.set("email", email);
-         myForm.set("password", password);
-         myForm.set("avatar", avatar);
-         dispatch(register(myForm)) */
     };
 
     const registerDataChange = (e) => {
@@ -80,19 +72,20 @@ const LoginSignUp = () => {
         }
     };
 
-    const redirect = location?.search ? location?.search?.split("=")[1] : "/account";
+
+
 
     useEffect(() => {
+        if (isAuthenticated === true) {
+            navigate(from, { replace: true });
+        }
         if (error) {
             toast.error(error)
             dispatch(clearErrors()
             )
-        }
 
-        if (isAuthenticated) {
-            navigate("/account")
         }
-    }, [error, dispatch, isAuthenticated, navigate]);
+    }, [error, isAuthenticated, dispatch, navigate, from]);
 
     const switchTabs = (e, tab) => {
         if (tab === "login") {
