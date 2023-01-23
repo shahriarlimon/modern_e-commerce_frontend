@@ -7,6 +7,8 @@ import { Rating } from "@material-ui/lab";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Loader from '../../components/overlays/Loader/Loader';
 import ReviewCard from './ProductCard';
+import { addItemsToCart } from '../../redux/actions/cartActions';
+import { toast } from 'react-toastify'
 function ProductDetails() {
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -36,7 +38,12 @@ function ProductDetails() {
         const qty = quantity - 1;
         setQuantity(qty);
     };
+    const addToCartHandler = (id, quantity) => {
+        console.log(id, quantity)
 
+         dispatch(addItemsToCart(id, quantity))
+        toast.success("Item added to cart")
+    }
     useEffect(() => {
         dispatch(getProductDetails(id))
     }, [dispatch, id])
@@ -75,7 +82,7 @@ function ProductDetails() {
                                         <input readOnly type="number" value={quantity} />
                                         <button onClick={increaseQuantity}>+</button>
                                     </div>
-                                    <button
+                                    <button onClick={() => addToCartHandler(id, quantity)}
                                         disabled={product?.Stock < 1 ? true : false}
                                     >
                                         Add to Cart

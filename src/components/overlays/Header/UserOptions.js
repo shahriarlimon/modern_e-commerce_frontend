@@ -8,7 +8,7 @@ import { IoMdExit } from 'react-icons/io';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { logout } from "../../../redux/actions/userAction";
 
@@ -16,12 +16,13 @@ import { logout } from "../../../redux/actions/userAction";
 
 function UserOptions({ user }) {
     const [open, setOpen] = useState(false);
+    const { cartItems } = useSelector((state) => state.cart)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const options = [
         { icon: <AiOutlineUnorderedList />, name: "Orders", func: orders },
         { icon: <BsFillPersonLinesFill />, name: "Profile", func: account },
-        /* {
+        {
             icon: (
                 < AiOutlineShoppingCart
                     style={{ color: cartItems.length > 0 ? "tomato" : "unset" }}
@@ -29,7 +30,7 @@ function UserOptions({ user }) {
             ),
             name: `Cart(${cartItems.length})`,
             func: cart,
-        }, */
+        },
         { icon: <IoMdExit />, name: "Logout", func: logoutUser },
     ];
 

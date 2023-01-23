@@ -5,9 +5,10 @@ import { BiLockOpenAlt } from 'react-icons/bi'
 import { MdVpnKey } from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { clearErrors } from "../../redux/actions/userAction";
+import { clearErrors, updatePassword } from "../../redux/actions/userAction";
 import MetaData from "../../components/overlays/MetaData/MetaData";
 import Loader from "../../components/overlays/Loader/Loader";
+import { UPDATE_PASSWORD_RESET } from "../../redux/actionTypes/userActionTypes";
 
 const UpdatePassword = () => {
     const dispatch = useDispatch();
@@ -21,19 +22,34 @@ const UpdatePassword = () => {
 
     const updatePasswordSubmit = (e) => {
         e.preventDefault();
-
-        const myForm = new FormData();
-
-        myForm.set("oldPassword", oldPassword);
-        myForm.set("newPassword", newPassword);
-        myForm.set("confirmPassword", confirmPassword);
+       /*  const oldPassword = document.getElementsByName("oldPassword")[0].value;
+        const newPassword = document.getElementsByName("newPassword")[0].value;
+        const confirmPassword = document.getElementsByName("confirmPassword")[0].value; */
+        const user = {
+            oldPassword, newPassword, confirmPassword
+        }
+        dispatch(updatePassword(user))
 
     };
 
     useEffect(() => {
 
+        if (isUpdated) {
+            toast.success("Password Updated Successfully");
+            navigate("/profile")
+            dispatch({
+                type: UPDATE_PASSWORD_RESET,
+            });
+        }
 
-    }, []);
+        if (error) {
+            toast.error(error)
+            dispatch(clearErrors())
+        }
+
+
+
+    }, [isUpdated, navigate, dispatch, error]);
 
     return (
         <Fragment>
@@ -53,6 +69,7 @@ const UpdatePassword = () => {
                                 <div className="loginPassword">
                                     <MdVpnKey />
                                     <input
+                                        name="oldPassword"
                                         type="password"
                                         placeholder="Old Password"
                                         required
@@ -64,6 +81,7 @@ const UpdatePassword = () => {
                                 <div className="loginPassword">
                                     <BiLockOpenAlt />
                                     <input
+                                        name="newPassword"
                                         type="password"
                                         placeholder="New Password"
                                         required
@@ -74,6 +92,7 @@ const UpdatePassword = () => {
                                 <div className="loginPassword">
                                     <BiLockOpenAlt />
                                     <input
+                                        name="confirmPassword"
                                         type="password"
                                         placeholder="Confirm Password"
                                         required
