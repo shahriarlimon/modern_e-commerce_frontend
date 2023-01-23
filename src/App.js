@@ -22,6 +22,7 @@ import UpdateProfile from './pages/User/UpdateProfile';
 import UpdatePassword from './pages/User/UpdatePassword';
 import Cart from './pages/Cart/Cart';
 import Shipping from './pages/Cart/Shipping';
+import ConfirmOrder from './pages/Cart/ConfirmOrder';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user)
@@ -50,6 +51,7 @@ function App() {
         <Route path='/password/update' element={<UpdatePassword />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/shipping' element={<Shipping />} />
+        <Route path='/order/confirm' element={<ConfirmOrder />} />
       </Route>
       {/*  <Route path="/profile" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Profile /></ProtectedRoute>} /> */}
       <Route path='/login' element={<LoginSignUp />} />
