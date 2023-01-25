@@ -29,6 +29,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import Payment from './pages/Cart/Payment';
 import OrderSuccess from './pages/Cart/OrderSuccess';
 import MyOrders from './pages/Order/Myorders';
+import OrderDetails from './pages/Order/OrderDetails';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -46,7 +47,7 @@ function App() {
       },
     })
     store.dispatch(loadUser())
-    getStripeApiKey() 
+    getStripeApiKey()
 
   }, [])
   console.log(stripeApiKey)
@@ -75,6 +76,7 @@ function App() {
         </Route>)}
         <Route path='/success' element={<OrderSuccess />} />
         <Route path='/orders' element={<MyOrders />} />
+        <Route path='/order/:id' element={<OrderDetails />} />
       </Route>
       <Route path='/login' element={<LoginSignUp />} />
     </Routes>

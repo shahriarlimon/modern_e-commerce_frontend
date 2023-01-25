@@ -1,4 +1,4 @@
-import { CLEAR_ERRORS, CREATE_ORDER_FAIL, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, MY_ORDERS_REQUEST, MY_ORDER_FAIL, MY_ORDER_SUCCESS } from "../actionTypes/orderTypes";
+import { CLEAR_ERRORS, CREATE_ORDER_FAIL, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, MY_ORDERS_REQUEST, MY_ORDER_FAIL, MY_ORDER_SUCCESS, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS } from "../actionTypes/orderTypes";
 
 export const newOrderReducer = (state = {}, action) => {
     switch (action.type) {
@@ -39,6 +39,31 @@ export const myOrdersReducer = (state = { orders: [] }, action) => {
                 orders: action.payload
             }
         case MY_ORDER_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state
+    }
+}
+export const orderDetailsReducer = (state = { order: {} }, action) => {
+    switch (action.type) {
+        case ORDER_DETAILS_REQUEST:
+            return {
+                loading: true
+            }
+        case ORDER_DETAILS_SUCCESS:
+            return {
+                loading: false,
+                order: action.payload
+            }
+        case ORDER_DETAILS_FAIL:
             return {
                 loading: false,
                 error: action.payload
