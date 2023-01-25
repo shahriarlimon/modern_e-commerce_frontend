@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import WebFont from "webfontloader";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Footer from './components/overlays/Footer/Footer';
 import Header from './components/overlays/Header/Header';
 import Home from './pages/Home/Home';
@@ -23,9 +23,22 @@ import UpdatePassword from './pages/User/UpdatePassword';
 import Cart from './pages/Cart/Cart';
 import Shipping from './pages/Cart/Shipping';
 import ConfirmOrder from './pages/Cart/ConfirmOrder';
+import axios from 'axios';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import Payment from './pages/Cart/Payment';
+import OrderSuccess from './pages/Cart/OrderSuccess';
+import MyOrders from './pages/Order/Myorders';
 
 function App() {
-  const { isAuthenticated, user } = useSelector((state) => state.user)
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const [stripeApiKey, setStripeApiKey] = useState("");
+  async function getStripeApiKey() {
+    const { data } = await axios.get('http://localhost:5000/api/payment/stripeapikey', {
+      withCredentials: true
+    })
+    setStripeApiKey(data.stripeApiKey)
+  }
   useEffect(() => {
     WebFont.load({
       google: {
@@ -33,7 +46,10 @@ function App() {
       },
     })
     store.dispatch(loadUser())
+    getStripeApiKey() 
+
   }, [])
+  console.log(stripeApiKey)
   return <Router>
     <Header />
     {
@@ -52,8 +68,14 @@ function App() {
         <Route path='/cart' element={<Cart />} />
         <Route path='/shipping' element={<Shipping />} />
         <Route path='/order/confirm' element={<ConfirmOrder />} />
+
+        {stripeApiKey && (<Route path="/process/payment" element={<Elements stripe={loadStripe(stripeApiKey)}>
+          <Payment />
+        </Elements>} >
+        </Route>)}
+        <Route path='/success' element={<OrderSuccess />} />
+        <Route path='/orders' element={<MyOrders />} />
       </Route>
-      {/*  <Route path="/profile" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Profile /></ProtectedRoute>} /> */}
       <Route path='/login' element={<LoginSignUp />} />
     </Routes>
     <ToastContainer />
