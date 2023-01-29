@@ -46,13 +46,13 @@ const LoginSignUp = () => {
 
     const registerSubmit = (e) => {
         e.preventDefault();
-        const name = document.getElementsByName("name")[0].value;
+        /* const name = document.getElementsByName("name")[0].value;
         const email = document.getElementsByName("email")[0].value;
-        const password = document.getElementsByName("password")[0].value;
+        const password = document.getElementsByName("password")[0].value; */
         const user = {
             name, email, password, avatar
         }
-         dispatch(register(user)) 
+        dispatch(register(user))
     };
 
     const registerDataChange = (e) => {

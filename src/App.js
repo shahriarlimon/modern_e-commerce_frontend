@@ -30,6 +30,9 @@ import Payment from './pages/Cart/Payment';
 import OrderSuccess from './pages/Cart/OrderSuccess';
 import MyOrders from './pages/Order/Myorders';
 import OrderDetails from './pages/Order/OrderDetails';
+import Dashboard from './pages/Admin/Dashboard';
+import ProductList from './pages/Admin/ProductList';
+import NewProduct from './pages/Admin/NewProduct';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -77,6 +80,12 @@ function App() {
         <Route path='/success' element={<OrderSuccess />} />
         <Route path='/orders' element={<MyOrders />} />
         <Route path='/order/:id' element={<OrderDetails />} />
+      </Route>
+      <Route element={<ProtectedRoute />} isAdmin={user?.role === "admin" ? true : false} adminRoute={true} isAuthenticated={isAuthenticated}>
+        <Route path='/admin/dashboard' element={<Dashboard />} />
+        <Route path='/admin/products' element={<ProductList />} />
+        <Route path='/admin/product' element={<NewProduct />} />
+
       </Route>
       <Route path='/login' element={<LoginSignUp />} />
     </Routes>

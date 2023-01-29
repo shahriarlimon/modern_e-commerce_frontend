@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CLEAR_ERRORS, CREATE_ORDER_FAIL, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, MY_ORDERS_REQUEST, MY_ORDER_FAIL, MY_ORDER_SUCCESS, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS } from "../actionTypes/orderTypes"
+import { ALL_ORDERS_FAIL, ALL_ORDERS_REQUEST, ALL_ORDERS_SUCCESS, CLEAR_ERRORS, CREATE_ORDER_FAIL, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, MY_ORDERS_REQUEST, MY_ORDER_FAIL, MY_ORDER_SUCCESS, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS } from "../actionTypes/orderTypes"
 
 export const createOrder = (order) => async (dispatch) => {
     try {
@@ -24,6 +24,21 @@ export const createOrder = (order) => async (dispatch) => {
 
 }
 
+// Get All Orders (admin)
+export const getAllOrders = () => async (dispatch) => {
+    try {
+        dispatch({ type: ALL_ORDERS_REQUEST });
+
+        const { data } = await axios.get("http://localhost:5000/api/order/admin", { withCredentials: true });
+
+        dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
+    } catch (error) {
+        dispatch({
+            type: ALL_ORDERS_FAIL,
+            payload: error.response.data.message,
+        });
+    }
+};
 
 
 

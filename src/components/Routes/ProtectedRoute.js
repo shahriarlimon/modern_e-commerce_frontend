@@ -8,12 +8,12 @@ const ProtectedRoute = ({
     isAdmin
 }) => {
     const location = useLocation()
-    if (!isAuthenticated) {
-        return <Navigate to={"/login"} state={{from: location}} replace/>;
+    if (isAuthenticated === false) {
+        return <Navigate to={"/login"} state={{ from: location }} replace />;
     }
 
     if (adminRoute && !isAdmin) {
-        return <Navigate to={"/"} state={{from: location}} replace />;
+        return <Navigate to={"/"} state={{ from: location }} replace />;
     }
 
     return children ? children : <Outlet />;

@@ -2,17 +2,19 @@ import React, { Fragment, useEffect, useState } from 'react';
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'
-import { getProductDetails } from '../../redux/actions/productActions';
+import { clearErrors, getProductDetails, newReview } from '../../redux/actions/productActions';
 import { Rating } from "@material-ui/lab";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Loader from '../../components/overlays/Loader/Loader';
 import ReviewCard from './ProductCard';
 import { addItemsToCart } from '../../redux/actions/cartActions';
 import { toast } from 'react-toastify'
+import { NEW_REVIEW_RESET } from '../../redux/actionTypes/productActionTypes';
 function ProductDetails() {
     const { id } = useParams();
     const dispatch = useDispatch();
     const { product, loading, error } = useSelector((state) => state.productDetails)
+    const { success, error: reviewError } = useSelector((state) => state.newReview)
 
     const options = {
         size: "large",
@@ -24,7 +26,17 @@ function ProductDetails() {
     const [open, setOpen] = useState(false);
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
+    const submitReviewToggle = () => {
+        open ? setOpen(false) : setOpen(true)
+    }
+    const reviewSubmitHandler = () => {
+        const reviewData = {
+            productId: id, rating, comment
+        }
+        dispatch(newReview(reviewData))
+        setOpen(false)
 
+    }
     const increaseQuantity = () => {
         if (product.Stock <= quantity) return;
 
@@ -41,12 +53,24 @@ function ProductDetails() {
     const addToCartHandler = (id, quantity) => {
         console.log(id, quantity)
 
-         dispatch(addItemsToCart(id, quantity))
+        dispatch(addItemsToCart(id, quantity))
         toast.success("Item added to cart")
     }
     useEffect(() => {
         dispatch(getProductDetails(id))
-    }, [dispatch, id])
+        if (error) {
+            toast.error(error)
+            dispatch(clearErrors())
+        }
+        if (reviewError) {
+            toast.error(reviewError)
+            dispatch(clearErrors())
+        }
+        if (success) {
+            toast.success("Review submitted successfully")
+            dispatch({ type: NEW_REVIEW_RESET })
+        }
+    }, [dispatch, id, error, reviewError, success])
 
     return (
         <Fragment>
@@ -99,7 +123,7 @@ function ProductDetails() {
                             <div className="detailsBlock-4">
                                 Description : <p>{product?.description}</p>
                             </div>
-                            <button className="submitReview">
+                            <button onClick={submitReviewToggle} className="submitReview">
                                 Submit Review
                             </button>
 
@@ -107,13 +131,15 @@ function ProductDetails() {
                         </div>
                     </div>
                     <h3 className="reviewsHeading">REVIEWS</h3>
-                    v <Dialog
+                    <Dialog
                         aria-labelledby="simple-dialog-title"
                         open={open}
+                        onClose={submitReviewToggle}
                     >
                         <DialogTitle>Submit Review</DialogTitle>
                         <DialogContent className="submitDialog">
                             <Rating
+                                name='rating'
                                 onChange={(e) => setRating(e.target.value)}
                                 value={rating}
                                 size="large"
@@ -121,6 +147,7 @@ function ProductDetails() {
 
                             <textarea
                                 className="submitDialogTextArea"
+                                name='comment'
                                 cols="30"
                                 rows="5"
                                 value={comment}
@@ -128,10 +155,10 @@ function ProductDetails() {
                             ></textarea>
                         </DialogContent>
                         <DialogActions>
-                            <Button color="secondary">
+                            <Button onClick={submitReviewToggle} color="secondary">
                                 Cancel
                             </Button>
-                            <Button color="primary">
+                            <Button onClick={() => reviewSubmitHandler()} color="primary">
                                 Submit
                             </Button>
                         </DialogActions>

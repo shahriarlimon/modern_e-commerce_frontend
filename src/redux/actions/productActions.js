@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ALL_PRODUCT_FAIL, ALL_PRODUCT_REQUEST, ALL_PRODUCT_SUCCESS, CLEAR_ERROR, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS } from '../actionTypes/productActionTypes';
+import { ADMIN_PRODUCT_FAIL, ADMIN_PRODUCT_REQUEST, ADMIN_PRODUCT_SUCCESS, ALL_PRODUCT_FAIL, ALL_PRODUCT_REQUEST, ALL_PRODUCT_SUCCESS, CLEAR_ERROR, NEW_PRODUCT_FAIL, NEW_PRODUCT_REQUEST, NEW_PRODUCT_SUCCESS, NEW_REVIEW_FAIL, NEW_REVIEW_REQUEST, NEW_REVIEW_SUCCESS, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS } from '../actionTypes/productActionTypes';
 
 export const getProducts = (keyword = "", currentPage = 1, price = [0, 20000], category, ratings = 0) => async (dispatch) => {
     try {
@@ -17,7 +17,40 @@ export const getProducts = (keyword = "", currentPage = 1, price = [0, 20000], c
         })
     }
 }
+/* get products for admin */
+export const getAdminProduct = () => async (dispatch) => {
+    try {
+        dispatch({ type: ADMIN_PRODUCT_REQUEST });
+        let link = `http://localhost:5000/api/products/admin/products`;
+        const { data } = await axios.get(link, { withCredentials: true })
+        dispatch({ type: ADMIN_PRODUCT_SUCCESS, payload: data })
+    } catch (error) {
+        dispatch({
+            type: ADMIN_PRODUCT_FAIL,
+            payload: error.response.data.message
+        })
+    }
 
+}
+/* create new product */
+export const createProduct = (productData) => async (dispatch) => {
+    try {
+        dispatch({ type: NEW_PRODUCT_REQUEST });
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        }
+        const { data } = await axios.post(`http://localhost:5000/api/products/create`, productData, config)
+        dispatch({ type: NEW_PRODUCT_SUCCESS, payload: data })
+    } catch (error) {
+        dispatch({
+            type: NEW_PRODUCT_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
 
 export const getProductDetails = (id) => async (dispatch) => {
     try {
@@ -27,6 +60,24 @@ export const getProductDetails = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: PRODUCT_DETAILS_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+export const newReview = (reviewData) => async (dispatch) => {
+    try {
+        dispatch({ type: NEW_REVIEW_REQUEST });
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        }
+        const { data } = await axios.put(`http://localhost:5000/api/products/review`, reviewData, config)
+        dispatch({ type: NEW_REVIEW_SUCCESS, payload: data.success })
+    } catch (error) {
+        dispatch({
+            type: NEW_REVIEW_FAIL,
             payload: error.response.data.message
         })
     }
