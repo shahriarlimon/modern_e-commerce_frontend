@@ -33,6 +33,7 @@ import OrderDetails from './pages/Order/OrderDetails';
 import Dashboard from './pages/Admin/Dashboard';
 import ProductList from './pages/Admin/ProductList';
 import NewProduct from './pages/Admin/NewProduct';
+import UpdateProduct from './pages/Admin/UpdateProduct';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -53,7 +54,6 @@ function App() {
     getStripeApiKey()
 
   }, [])
-  console.log(stripeApiKey)
   return <Router>
     <Header />
     {
@@ -85,6 +85,7 @@ function App() {
         <Route path='/admin/dashboard' element={<Dashboard />} />
         <Route path='/admin/products' element={<ProductList />} />
         <Route path='/admin/product' element={<NewProduct />} />
+        <Route path='/admin/product/:id' element={<UpdateProduct />} />
 
       </Route>
       <Route path='/login' element={<LoginSignUp />} />
