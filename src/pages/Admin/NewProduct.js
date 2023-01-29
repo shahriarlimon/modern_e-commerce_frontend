@@ -2,11 +2,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import "./NewProduct.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@material-ui/core";
-import {MdAccountTree, MdOutlineAccountTree} from 'react-icons/md';
-import {MdOutlineDescription} from 'react-icons/md';
-import {GrStorage} from 'react-icons/gr';
-import {MdOutlineSpellcheck} from 'react-icons/md';
-import {MdOutlineAttachMoney} from 'react-icons/md'
+import { MdAccountTree, MdOutlineAccountTree } from 'react-icons/md';
+import { MdOutlineDescription } from 'react-icons/md';
+import { GrStorage } from 'react-icons/gr';
+import { MdOutlineSpellcheck } from 'react-icons/md';
+import { MdOutlineAttachMoney } from 'react-icons/md'
 import SideBar from "./Sidebar";
 import { clearErrors, createProduct } from "../../redux/actions/productActions";
 import { NEW_PRODUCT_RESET } from "../../redux/actionTypes/productActionTypes";
