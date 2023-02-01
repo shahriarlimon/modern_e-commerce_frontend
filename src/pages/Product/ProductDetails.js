@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import "./ProductDetails.css";
+import Carousel from 'react-material-ui-carousel'
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'
 import { clearErrors, getProductDetails, newReview } from '../../redux/actions/productActions';
@@ -11,6 +12,7 @@ import { addItemsToCart } from '../../redux/actions/cartActions';
 import { toast } from 'react-toastify'
 import { NEW_REVIEW_RESET } from '../../redux/actionTypes/productActionTypes';
 function ProductDetails() {
+
     const { id } = useParams();
     const dispatch = useDispatch();
     const { product, loading, error } = useSelector((state) => state.productDetails)
@@ -76,14 +78,17 @@ function ProductDetails() {
                 loading ? (<Loader />) : (<Fragment>
 
                     <div className='ProductDetails'>
-                        <div>
-                            {
-                                product?.images && product?.images.map((item, idx) => (
-                                    <img alt={`${idx} slide`} key={item?.url} src={item?.url} className='CarouselImage' />
-                                ))
-                            }
-
-                        </div>
+                        <Carousel>
+                            {product?.images &&
+                                product?.images.map((item, i) => (
+                                    <img
+                                        key={i}
+                                        className="CarouselImage"
+                                        src={item?.url}
+                                        alt={`${i} Slide`}
+                                    />
+                                ))}
+                        </Carousel>
                         <div>
                             <div className='detailsBlock-1'>
                                 <h2>{product?.name}</h2>
