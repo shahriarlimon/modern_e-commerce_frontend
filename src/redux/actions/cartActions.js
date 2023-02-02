@@ -9,7 +9,7 @@ export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
         },
         withCredentials: true
     }
-    let link = `http://localhost:5000/api/products/${id}`;
+    let link = `https://modern-e-commerce-backend.vercel.app/api/products/${id}`;
 
     const { data } = await axios.get(link, config)
     dispatch({

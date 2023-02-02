@@ -4,9 +4,9 @@ import { ADMIN_PRODUCT_FAIL, ADMIN_PRODUCT_REQUEST, ADMIN_PRODUCT_SUCCESS, ALL_P
 export const getProducts = (keyword = "", currentPage = 1, price = [0, 20000], category, ratings = 0) => async (dispatch) => {
     try {
         dispatch({ type: ALL_PRODUCT_REQUEST });
-        let link = `http://localhost:5000/api/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+        let link = `https://modern-e-commerce-backend.vercel.app/api/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
         if (category) {
-            link = `http://localhost:5000/api/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
+            link = `https://modern-e-commerce-backend.vercel.app/api/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
         }
         const { data } = await axios.get(link, { withCredentials: true })
         dispatch({ type: ALL_PRODUCT_SUCCESS, payload: data })
@@ -21,7 +21,7 @@ export const getProducts = (keyword = "", currentPage = 1, price = [0, 20000], c
 export const getAdminProduct = () => async (dispatch) => {
     try {
         dispatch({ type: ADMIN_PRODUCT_REQUEST });
-        let link = `http://localhost:5000/api/products/admin/products`;
+        let link = `https://modern-e-commerce-backend.vercel.app/api/products/admin/products`;
         const { data } = await axios.get(link, { withCredentials: true })
         dispatch({ type: ADMIN_PRODUCT_SUCCESS, payload: data })
     } catch (error) {
@@ -42,7 +42,7 @@ export const createProduct = (productData) => async (dispatch) => {
             },
             withCredentials: true
         }
-        const { data } = await axios.post(`http://localhost:5000/api/products/create`, productData, config)
+        const { data } = await axios.post(`https://modern-e-commerce-backend.vercel.app/api/products/create`, productData, config)
         dispatch({ type: NEW_PRODUCT_SUCCESS, payload: data })
     } catch (error) {
         dispatch({
@@ -55,7 +55,7 @@ export const createProduct = (productData) => async (dispatch) => {
 export const getProductDetails = (id) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_DETAILS_REQUEST });
-        const { data } = await axios.get(`http://localhost:5000/api/products/${id}`, { withCredentials: true })
+        const { data } = await axios.get(`https://modern-e-commerce-backend.vercel.app/api/products/${id}`, { withCredentials: true })
         dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data.product })
     } catch (error) {
         dispatch({
@@ -73,7 +73,7 @@ export const newReview = (reviewData) => async (dispatch) => {
             },
             withCredentials: true
         }
-        const { data } = await axios.put(`http://localhost:5000/api/products/review`, reviewData, config)
+        const { data } = await axios.put(`https://modern-e-commerce-backend.vercel.app/api/products/review`, reviewData, config)
         dispatch({ type: NEW_REVIEW_SUCCESS, payload: data.success })
     } catch (error) {
         dispatch({
@@ -92,7 +92,7 @@ export const updateProduct = (productData, id) => async (dispatch) => {
             },
             withCredentials: true
         }
-        const { data } = await axios.put(`http://localhost:5000/api/products/${id}`, productData, config)
+        const { data } = await axios.put(`https://modern-e-commerce-backend.vercel.app/api/products/${id}`, productData, config)
         dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data.success })
     } catch (error) {
         dispatch({
@@ -112,7 +112,7 @@ export const deleteProduct = (id) => async (dispatch) => {
             },
             withCredentials: true
         }
-        const { data } = await axios.delete(`http://localhost:5000/api/products/${id}`, config)
+        const { data } = await axios.delete(`https://modern-e-commerce-backend.vercel.app/api/products/${id}`, config)
         dispatch({ type: DELETE_PRODUCT_SUCCESS, payload: data.success })
     } catch (error) {
         dispatch({
@@ -126,7 +126,7 @@ export const getAllReviews = (id) => async (dispatch) => {
     try {
         dispatch({ type: ALL_REVIEW_REQUEST });
 
-        const { data } = await axios.get(`http://localhost:5000/api/products/admin/reviews?id=${id}`, { withCredentials: true });
+        const { data } = await axios.get(`https://modern-e-commerce-backend.vercel.app/api/products/admin/reviews?id=${id}`, { withCredentials: true });
 
         dispatch({
             type: ALL_REVIEW_SUCCESS,
@@ -146,7 +146,7 @@ export const deleteReviews = (reviewId, productId) => async (dispatch) => {
         dispatch({ type: DELETE_REVIEW_REQUEST });
 
         const { data } = await axios.delete(
-            `http://localhost:5000/api/products/admin/review?id=${reviewId}&productId=${productId}`, { withCredentials: true }
+            `https://modern-e-commerce-backend.vercel.app/api/products/admin/review?id=${reviewId}&productId=${productId}`, { withCredentials: true }
         );
 
         dispatch({

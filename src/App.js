@@ -43,12 +43,13 @@ import UpdateUser from './pages/Admin/UpdateUser';
 import ProductReviews from './pages/Admin/ProductReview';
 import Contact from './pages/Contact/Contact';
 import About from './pages/About/About';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
   async function getStripeApiKey() {
-    const { data } = await axios.get('http://localhost:5000/api/payment/stripeapikey', {
+    const { data } = await axios.get('https://modern-e-commerce-backend.vercel.app/api/payment/stripeapikey', {
       withCredentials: true
     })
     setStripeApiKey(data.stripeApiKey)
@@ -63,6 +64,7 @@ function App() {
     getStripeApiKey()
 
   }, [])
+  window.addEventListener("contextmenu", (e) => e.preventDefault())
   return <Router>
     <Header />
     {
@@ -104,6 +106,7 @@ function App() {
       <Route path='/login' element={<LoginSignUp />} />
       <Route path='/contact' element={<Contact />} />
       <Route path='/about' element={<About />} />
+      <Route path='*' element={<NotFound />} />
     </Routes>
     <ToastContainer />
     <Footer />

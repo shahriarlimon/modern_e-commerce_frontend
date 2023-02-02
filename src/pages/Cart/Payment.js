@@ -52,7 +52,7 @@ const Payment = () => {
                 },
                 withCredentials: true
             }
-            const { data } = await axios.post("http://localhost:5000/api/payment/process/payment", paymentData, config)
+            const { data } = await axios.post("https://modern-e-commerce-backend.vercel.app/api/payment/process/payment", paymentData, config)
             const client_secret = data.client_secret;
             if (!elements || !stripe) return;
             const result = await stripe.confirmCardPayment(client_secret, {

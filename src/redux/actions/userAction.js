@@ -10,7 +10,7 @@ export const login = (email, password) => async (dispatch) => {
             },
             withCredentials: true
         }
-        let link = `http://localhost:5000/api/user/login`;
+        let link = `https://modern-e-commerce-backend.vercel.app/api/user/login`;
 
         const { data } = await axios.post(link, { email, password }, config)
         dispatch({ type: LOGIN_SUCCESS, payload: data.user })
@@ -33,7 +33,7 @@ export const register = (userData) => async (dispatch) => {
             },
             withCredentials: true
         }
-        let link = `http://localhost:5000/api/user/register`;
+        let link = `https://modern-e-commerce-backend.vercel.app/api/user/register`;
 
         const { data } = await axios.post(link, userData, config)
         dispatch({ type: REGISTER_SUCCESS, payload: data.user })
@@ -50,7 +50,7 @@ export const register = (userData) => async (dispatch) => {
 export const loadUser = () => async (dispatch) => {
     try {
         dispatch({ type: LOAD_USER_REQUEST });
-        let link = `http://localhost:5000/api/user/me`;
+        let link = `https://modern-e-commerce-backend.vercel.app/api/user/me`;
         const { data } = await axios.get(link, {
             withCredentials: true
         })
@@ -68,7 +68,7 @@ export const loadUser = () => async (dispatch) => {
 // Logout User
 export const logout = () => async (dispatch) => {
     try {
-        await axios.get(`http://localhost:5000/api/user/logout`, {
+        await axios.get(`https://modern-e-commerce-backend.vercel.app/api/user/logout`, {
             withCredentials: true
         });
         dispatch({ type: LOGOUT_SUCCESS });
@@ -87,7 +87,7 @@ export const updateProfile = (userData) => async (dispatch) => {
             },
             withCredentials: true
         }
-        let link = `http://localhost:5000/api/user/update-profile`;
+        let link = `https://modern-e-commerce-backend.vercel.app/api/user/update-profile`;
 
         const { data } = await axios.put(link, userData, config)
         dispatch({ type: USER_UPDATE_SUCCESS, payload: data.success })
@@ -109,7 +109,7 @@ export const updatePassword = (userData) => async (dispatch) => {
             },
             withCredentials: true
         }
-        let link = `http://localhost:5000/api/user/password/update`;
+        let link = `https://modern-e-commerce-backend.vercel.app/api/user/password/update`;
 
         const { data } = await axios.put(link, userData, config)
         dispatch({ type: UPDATE_PASSWORD_SUCCESS, payload: data.success })
@@ -126,7 +126,7 @@ export const updatePassword = (userData) => async (dispatch) => {
 export const getAllUsers = () => async (dispatch) => {
     try {
         dispatch({ type: ALL_USERS_REQUEST });
-        const { data } = await axios.get(`http://localhost:5000/api/user/admin`, { withCredentials: true });
+        const { data } = await axios.get(`https://modern-e-commerce-backend.vercel.app/api/user/admin`, { withCredentials: true });
 
         dispatch({ type: ALL_USERS_SUCCESS, payload: data.users });
     } catch (error) {
@@ -141,7 +141,7 @@ export const clearErrors = () => async (dispatch) => {
 export const getUserDetails = (id) => async (dispatch) => {
     try {
         dispatch({ type: USER_DETAILS_REQUEST });
-        const { data } = await axios.get(`http://localhost:5000/api/user/${id}`, { withCredentials: true });
+        const { data } = await axios.get(`https://modern-e-commerce-backend.vercel.app/api/user/${id}`, { withCredentials: true });
 
         dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
     } catch (error) {
@@ -157,7 +157,7 @@ export const updateUser = (userData, id) => async (dispatch) => {
         const config = { headers: { "Content-Type": "application/json" }, withCredentials: true };
 
         const { data } = await axios.put(
-            `http://localhost:5000/api/user/role/${id}`,
+            `https://modern-e-commerce-backend.vercel.app/api/user/role/${id}`,
             userData,
             config
         );
@@ -177,7 +177,7 @@ export const deleteUser = (id) => async (dispatch) => {
     try {
         dispatch({ type: DELETE_USER_REQUEST });
 
-        const { data } = await axios.delete(`http://localhost:5000/api/user/${id}`, { withCredentials: true });
+        const { data } = await axios.delete(`https://modern-e-commerce-backend.vercel.app/api/user/${id}`, { withCredentials: true });
 
         dispatch({ type: DELETE_USER_SUCCESS, payload: data });
     } catch (error) {
