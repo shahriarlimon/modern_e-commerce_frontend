@@ -6,16 +6,16 @@ import { FiMail } from 'react-icons/fi'
 /* import LockOpenIcon from "@material-ui/icons/LockOpen" */;
 import { BiLockOpenAlt } from 'react-icons/bi'
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../components/overlays/Loader/Loader";
+import Loader from "../../../components/overlays/Loader/Loader";
 import { FaRegUser } from 'react-icons/fa';
-import { clearErrors, login, register } from "../../redux/actions/userAction";
+import { clearErrors, login, register } from "../../../redux/actions/userAction";
 import { toast } from 'react-toastify';
+import axios from "axios";
+import { server } from "../../../redux/store";
 
 const LoginSignUp = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
-    let from = location.state?.from?.pathname || "/profile";
     const { error, loading, isAuthenticated } = useSelector(
         (state) => state.user
     );
@@ -38,18 +38,41 @@ const LoginSignUp = () => {
     const [avatar, setAvatar] = useState("/Profile.png");
     const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
-    const loginSubmit = (e) => {
+    const loginSubmit = async (e) => {
         e.preventDefault();
-        dispatch(login(loginEmail, loginPassword))
+        await axios.post(`${server}/user/login`, { email, password }, {
+            withCredentials: true
+        }).then((res) => {
+            toast.success("Login Success!")
+            navigate("/profile")
+            window.location.reload(true)
+        }).catch((error) => {
+            toast.error(error.response.data.message)
+        })
+
 
     };
 
-    const registerSubmit = (e) => {
+    const registerSubmit = async (e) => {
         e.preventDefault();
         const user = {
             name, email, password, avatar
         }
-        dispatch(register(user))
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            withCredentials: true
+        }
+       
+        await axios.post(`${server}/user/register`, user, config).then((res) => {
+            toast.success("user created successfully!")
+            navigate("/profile")
+            window.location.reload(true)
+        }).catch((error) => {
+            toast.error(error.response.data.message)
+        }) 
+
     };
 
     const registerDataChange = (e) => {
@@ -72,17 +95,6 @@ const LoginSignUp = () => {
 
 
 
-    useEffect(() => {
-        if (isAuthenticated === true) {
-            navigate("/profile");
-        }
-        if (error) {
-            toast.error(error)
-            dispatch(clearErrors()
-            )
-
-        }
-    }, [error, isAuthenticated, dispatch, navigate, from]);
 
     const switchTabs = (e, tab) => {
         if (tab === "login") {

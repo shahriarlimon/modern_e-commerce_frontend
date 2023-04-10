@@ -13,7 +13,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductDetails from './pages/Product/ProductDetails';
 import Products from './pages/Products/Products';
 import Search from './pages/Products/Search';
-import LoginSignUp from './pages/User/LoginSignUp';
 import store, { server } from './redux/store';
 import { loadUser } from './redux/actions/userAction';
 import { useSelector } from 'react-redux';
@@ -43,8 +42,9 @@ import ProductReviews from './pages/Admin/ProductReview';
 import Contact from './pages/Contact/Contact';
 import About from './pages/About/About';
 import NotFound from './pages/NotFound/NotFound';
-import { ProtectedRoute } from "protected-route-react";
 import { getProducts } from './redux/actions/productActions';
+import LoginSignupPage from './pages/User/LoginSignup/LoginSignupPage';
+import ProtectedRoute from './Route/ProtectedRoute';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -79,23 +79,21 @@ function App() {
       <Route path='/products' element={<Products />} />
       <Route path='/products/:keyword' element={<Products />} />
       <Route path='/search' element={<Search />} />
-      <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
-        <Route path='/profile' element={<Profile />} />
-        <Route path="/update-profile" element={<UpdateProfile />} />
-        <Route path='/password/update' element={<UpdatePassword />} />
-        <Route path='/cart' element={<Cart />} />
-        <Route path='/shipping' element={<Shipping />} />
-        <Route path='/order/confirm' element={<ConfirmOrder />} />
+      <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/update-profile" element={<ProtectedRoute><UpdateProfile /></ProtectedRoute>} />
+      <Route path='/password/update' element={<ProtectedRoute><UpdatePassword /></ProtectedRoute>} />
+      <Route path='/cart' element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+      <Route path='/shipping' element={<ProtectedRoute><Shipping /></ProtectedRoute>} />
+      <Route path='/order/confirm' element={<ProtectedRoute><ConfirmOrder /></ProtectedRoute>} />
+      {stripeApiKey && (<Route path="/process/payment" element={<Elements stripe={loadStripe(stripeApiKey)}>
+        <Payment />
+      </Elements>} >
+      </Route>)}
+      <Route path='/success' element={<ProtectedRoute><OrderSuccess /></ProtectedRoute>} />
+      <Route path='/orders' element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
+      <Route path='/order/:id' element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
 
-        {stripeApiKey && (<Route path="/process/payment" element={<Elements stripe={loadStripe(stripeApiKey)}>
-          <Payment />
-        </Elements>} >
-        </Route>)}
-        <Route path='/success' element={<OrderSuccess />} />
-        <Route path='/orders' element={<MyOrders />} />
-        <Route path='/order/:id' element={<OrderDetails />} />
-      </Route>
-      <Route element={<ProtectedRoute isAuthenticated={isAuthenticated}
+      {/* <Route element={<ProtectedRoute isAuthenticated={isAuthenticated}
         adminRoute={true}
         isAdmin={user && user.role === "admin"}
         redirectAdmin="/profile" />} >
@@ -108,13 +106,11 @@ function App() {
         <Route path='/admin/users' element={<UserList />} />
         <Route path='/admin/user/:id' element={<UpdateUser />} />
         <Route path='/admin/reviews' element={<ProductReviews />} />
-      </Route>
+      </Route> */}
       <Route
         path="/login"
         element={
-          <ProtectedRoute isAuthenticated={!isAuthenticated} redirect="/profile">
-            <LoginSignUp />
-          </ProtectedRoute>
+          <LoginSignupPage />
         }
       />
       <Route path='/contact' element={<Contact />} />
