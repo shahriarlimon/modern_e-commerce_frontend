@@ -18,6 +18,7 @@ import { toast } from 'react-toastify'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import { clearErrors, createOrder } from '../../redux/actions/orderActions';
+import { server } from '../../redux/store';
 
 const Payment = () => {
     const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
@@ -31,11 +32,10 @@ const Payment = () => {
     const { error } = useSelector((state) => state.newOrder);
 
     const paymentData = {
-        amount: Math.round(orderInfo.totalPrice * 100),
-
+        amount: Math.round(orderInfo.totalPrice * 100)
     }
     let order = {
-        shippingInfo: { ...shippingInfo, phoneNo: Number(shippingInfo.phoneNo), zipCode:Number(shippingInfo.zipCode)},
+        shippingInfo: { ...shippingInfo, phoneNo: Number(shippingInfo.phoneNo), zipCode: Number(shippingInfo.zipCode) },
         orderItems: cartItems,
         itemsPrice: orderInfo.subtotal,
         taxPrice: orderInfo.tax,
@@ -52,7 +52,7 @@ const Payment = () => {
                 },
                 withCredentials: true
             }
-            const { data } = await axios.post("https://modern-e-commerce-backend.vercel.app/api/payment/process/payment", paymentData, config)
+            const { data } = await axios.post(`${server}/payment/process/payment`, paymentData, config)
             const client_secret = data.client_secret;
             if (!elements || !stripe) return;
             const result = await stripe.confirmCardPayment(client_secret, {
@@ -81,7 +81,6 @@ const Payment = () => {
                         id: result.paymentIntent.id,
                         status: result.paymentIntent.status
                     }
-                    /* console.log(order) */
                     dispatch(createOrder(order));
                     navigate('/success')
                 } else {
@@ -100,7 +99,7 @@ const Payment = () => {
             toast.error(error);
             dispatch(clearErrors());
         }
-    }, [dispatch, error]);
+    }, [dispatch, error, user, navigate]);
     return (
         <Fragment>
             <MetaData title="Payment" />

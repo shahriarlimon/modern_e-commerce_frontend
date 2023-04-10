@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./MyOrders.css";
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector, useDispatch } from "react-redux";
@@ -13,10 +13,10 @@ import { toast } from "react-toastify";
 
 const MyOrders = () => {
     const dispatch = useDispatch();
-    
-    const { loading, error, orders } = useSelector((state) => state?.myOrders);
-    console.log(orders)
+
+    const { loading, orders } = useSelector((state) => state?.myOrders);
     const { user } = useSelector((state) => state?.user);
+    const [error, setError] = useState(null)
 
     const columns = [
         { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
@@ -77,12 +77,15 @@ const MyOrders = () => {
         });
 
     useEffect(() => {
-        if (error) {
-            toast.error(error);
-            dispatch(clearErrors());
-        }
-
-        dispatch(myOrders());
+        dispatch(myOrders())
+            .then((response) => {
+                setError(null);
+            })
+            .catch((error) => {
+                setError(error.message);
+                toast.error(error.message);
+                dispatch(clearErrors());
+            });
     }, [dispatch, error]);
 
     return (

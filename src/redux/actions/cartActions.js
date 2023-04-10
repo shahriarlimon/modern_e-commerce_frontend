@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ADD_TO_CART, REMOVE_FROM_CART, SAVE_SHIPPING_INFO } from "../actionTypes/cartTypes";
+import { server } from "../store";
 
 
 export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
@@ -9,7 +10,7 @@ export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
         },
         withCredentials: true
     }
-    let link = `https://modern-e-commerce-backend.vercel.app/api/products/${id}`;
+    let link = `${server}/products/${id}`;
 
     const { data } = await axios.get(link, config)
     dispatch({
@@ -34,9 +35,10 @@ export const removeItemsFromCart = (id) => async (dispatch, getState) => {
 };
 
 /* saving shipping information */
-export const saveShippingInfo = (data) => async (dispatch) => {
+export const saveShippingInfo = (data) => async (dispatch, getState) => {
     dispatch({
         type: SAVE_SHIPPING_INFO,
         payload: data
     })
+    localStorage.setItem("shippingInfo", JSON.stringify(getState().cart.shippingInfo))
 }

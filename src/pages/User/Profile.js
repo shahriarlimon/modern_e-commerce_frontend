@@ -10,8 +10,8 @@ const Profile = () => {
     const navigate = useNavigate();
     const location = useLocation();
     let from = location?.state?.from?.pathname || "/profile";
-    useEffect(() => {
 
+    useEffect(() => {
         if (isAuthenticated === false) {
             navigate("/login", { replace: true });
         }

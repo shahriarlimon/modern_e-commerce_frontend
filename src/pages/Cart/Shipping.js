@@ -7,12 +7,6 @@ import { HiLocationMarker } from 'react-icons/hi';
 import { MdPublic } from "react-icons/md";
 import { AiOutlinePhone } from "react-icons/ai";
 import { MdTransferWithinAStation } from 'react-icons/md'
-/* import PinDropIcon from "@material-ui/icons/PinDrop"; */
-/* import HomeIcon from "@material-ui/icons/Home";
-import LocationCityIcon from "@material-ui/icons/LocationCity";
-import PublicIcon from "@material-ui/icons/Public";
-import PhoneIcon from "@material-ui/icons/Phone";
-import TransferWithinAStationIcon from "@material-ui/icons/TransferWithinAStation"; */
 import { Country, State } from "country-state-city";
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useNavigate } from "react-router-dom";

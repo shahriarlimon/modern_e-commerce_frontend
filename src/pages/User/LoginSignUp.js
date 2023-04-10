@@ -46,9 +46,6 @@ const LoginSignUp = () => {
 
     const registerSubmit = (e) => {
         e.preventDefault();
-        /* const name = document.getElementsByName("name")[0].value;
-        const email = document.getElementsByName("email")[0].value;
-        const password = document.getElementsByName("password")[0].value; */
         const user = {
             name, email, password, avatar
         }
@@ -186,6 +183,7 @@ const LoginSignUp = () => {
                                 <div id="registerImage">
                                     <img src={avatarPreview} alt="Avatar Preview" />
                                     <input
+                                        required={true}
                                         type="file"
                                         name="avatar"
                                         accept="image/*"

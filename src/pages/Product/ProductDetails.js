@@ -23,7 +23,7 @@ function ProductDetails() {
         value: product?.ratings,
         readOnly: true,
         precision: 0.5,
-    };
+    }; 
     const [quantity, setQuantity] = useState(1);
     const [open, setOpen] = useState(false);
     const [rating, setRating] = useState(0);
@@ -115,7 +115,7 @@ function ProductDetails() {
                                         Add to Cart
                                     </button>
                                 </div>
-
+                                            
                                 <p>
                                     Status:
                                     <b className={product?.Stock < 1 ? "redColor" : "greenColor"}>

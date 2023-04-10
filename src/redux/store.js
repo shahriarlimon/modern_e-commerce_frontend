@@ -14,3 +14,4 @@ const initialState = {
 }
 const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(thunk, logger)))
 export default store;
+export const server = "https://modern-ecommerce-backend.vercel.app/api"

@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
   newOrder: newOrderReducer,
   myOrders: myOrdersReducer,
   orderDetails: orderDetailsReducer,
-  newReview: newReviewReducer,
+  newReview: newReviewReducer, 
   allUsers: allUsersReducer,
   userDetails: userDetailsReducer,
   allOrders: allOrdersReducer,

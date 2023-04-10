@@ -14,12 +14,11 @@ import ProductDetails from './pages/Product/ProductDetails';
 import Products from './pages/Products/Products';
 import Search from './pages/Products/Search';
 import LoginSignUp from './pages/User/LoginSignUp';
-import store from './redux/store';
+import store, { server } from './redux/store';
 import { loadUser } from './redux/actions/userAction';
 import { useSelector } from 'react-redux';
 import UserOptions from './components/overlays/Header/UserOptions';
 import Profile from './pages/User/Profile';
-import ProtectedRoute from './components/Routes/ProtectedRoute';
 import UpdateProfile from './pages/User/UpdateProfile';
 import UpdatePassword from './pages/User/UpdatePassword';
 import Cart from './pages/Cart/Cart';
@@ -44,16 +43,19 @@ import ProductReviews from './pages/Admin/ProductReview';
 import Contact from './pages/Contact/Contact';
 import About from './pages/About/About';
 import NotFound from './pages/NotFound/NotFound';
+import { ProtectedRoute } from "protected-route-react";
+import { getProducts } from './redux/actions/productActions';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
   async function getStripeApiKey() {
-    const { data } = await axios.get('https://modern-e-commerce-backend.vercel.app/api/payment/stripeapikey', {
+    const { data } = await axios.get(`${server}/payment/stripeapikey`, {
       withCredentials: true
     })
     setStripeApiKey(data.stripeApiKey)
   }
+
   useEffect(() => {
     WebFont.load({
       google: {
@@ -61,6 +63,7 @@ function App() {
       },
     })
     store.dispatch(loadUser())
+    store.dispatch(getProducts())
     getStripeApiKey()
 
   }, [])
@@ -92,7 +95,10 @@ function App() {
         <Route path='/orders' element={<MyOrders />} />
         <Route path='/order/:id' element={<OrderDetails />} />
       </Route>
-      <Route element={<ProtectedRoute />} isAdmin={user?.role === "admin" ? true : false} adminRoute={true} isAuthenticated={isAuthenticated}>
+      <Route element={<ProtectedRoute isAuthenticated={isAuthenticated}
+        adminRoute={true}
+        isAdmin={user && user.role === "admin"}
+        redirectAdmin="/profile" />} >
         <Route path='/admin/dashboard' element={<Dashboard />} />
         <Route path='/admin/products' element={<ProductList />} />
         <Route path='/admin/product' element={<NewProduct />} />
@@ -103,7 +109,14 @@ function App() {
         <Route path='/admin/user/:id' element={<UpdateUser />} />
         <Route path='/admin/reviews' element={<ProductReviews />} />
       </Route>
-      <Route path='/login' element={<LoginSignUp />} />
+      <Route
+        path="/login"
+        element={
+          <ProtectedRoute isAuthenticated={!isAuthenticated} redirect="/profile">
+            <LoginSignUp />
+          </ProtectedRoute>
+        }
+      />
       <Route path='/contact' element={<Contact />} />
       <Route path='/about' element={<About />} />
       <Route path='*' element={<NotFound />} />
