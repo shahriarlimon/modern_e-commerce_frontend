@@ -34,11 +34,8 @@ ChartJS.register(
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-
   const { products } = useSelector((state) => state.products);
-
   const { orders } = useSelector((state) => state.allOrders);
-
   const { users } = useSelector((state) => state.allUsers);
   let outOfStock = 0;
 
@@ -60,6 +57,7 @@ const Dashboard = () => {
     orders?.forEach((item) => {
       totalAmount += item.totalPrice;
     });
+    
   const options = {
     responsive: true,
     plugins: {

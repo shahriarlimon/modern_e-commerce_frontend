@@ -28,9 +28,7 @@ export const createOrder = (order) => async (dispatch) => {
 export const getAllOrders = () => async (dispatch) => {
     try {
         dispatch({ type: ALL_ORDERS_REQUEST });
-
         const { data } = await axios.get(`${server}/order/admin`, { withCredentials: true });
-
         dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
     } catch (error) {
         dispatch({

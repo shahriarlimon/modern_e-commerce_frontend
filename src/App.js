@@ -45,6 +45,7 @@ import NotFound from './pages/NotFound/NotFound';
 import { getProducts } from './redux/actions/productActions';
 import LoginSignupPage from './pages/User/LoginSignup/LoginSignupPage';
 import ProtectedRoute from './Route/ProtectedRoute';
+import AdminProtectedRoute from './Route/AdminProtectedRoute';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -92,21 +93,16 @@ function App() {
       <Route path='/success' element={<ProtectedRoute><OrderSuccess /></ProtectedRoute>} />
       <Route path='/orders' element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
       <Route path='/order/:id' element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
+      <Route path='/admin/dashboard' element={<AdminProtectedRoute><Dashboard /></AdminProtectedRoute>} />
+      <Route path='/admin/products' element={<AdminProtectedRoute><ProductList /></AdminProtectedRoute>} />
+      <Route path='/admin/product' element={<AdminProtectedRoute><NewProduct /></AdminProtectedRoute>} />
+      <Route path='/admin/product/:id' element={<AdminProtectedRoute><UpdateProduct /></AdminProtectedRoute>} />
+      <Route path='/admin/orders' element={<AdminProtectedRoute><OrderList /></AdminProtectedRoute>} />
+      <Route path='/admin/order/:id' element={<AdminProtectedRoute><ProcessOrder /></AdminProtectedRoute>} />
+      <Route path='/admin/users' element={<AdminProtectedRoute><UserList /></AdminProtectedRoute>} />
+      <Route path='/admin/user/:id' element={<AdminProtectedRoute><UpdateUser /></AdminProtectedRoute>} />
+      <Route path='/admin/reviews' element={<AdminProtectedRoute><ProductReviews /></AdminProtectedRoute>} />
 
-      {/* <Route element={<ProtectedRoute isAuthenticated={isAuthenticated}
-        adminRoute={true}
-        isAdmin={user && user.role === "admin"}
-        redirectAdmin="/profile" />} >
-        <Route path='/admin/dashboard' element={<Dashboard />} />
-        <Route path='/admin/products' element={<ProductList />} />
-        <Route path='/admin/product' element={<NewProduct />} />
-        <Route path='/admin/product/:id' element={<UpdateProduct />} />
-        <Route path='/admin/orders' element={<OrderList />} />
-        <Route path='/admin/order/:id' element={<ProcessOrder />} />
-        <Route path='/admin/users' element={<UserList />} />
-        <Route path='/admin/user/:id' element={<UpdateUser />} />
-        <Route path='/admin/reviews' element={<ProductReviews />} />
-      </Route> */}
       <Route
         path="/login"
         element={
