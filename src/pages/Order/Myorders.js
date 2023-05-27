@@ -106,8 +106,7 @@ const MyOrders = () => {
                             autoHeight
                         />
                     </Box>
-
-                    <Typography id="myOrdersHeading">{user?.name}'s Orders</Typography>
+                    <h3 id="myOrdersHeading">{user?.name}'s Orders</h3>
                 </div>
             )}
         </Fragment>

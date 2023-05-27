@@ -14,4 +14,4 @@ const initialState = {
 }
 const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(thunk, logger)))
 export default store;
-export const server = "http://localhost:5000/api/v1"
+export const server = "https://modern-ecommarce.web.app/api/v1"

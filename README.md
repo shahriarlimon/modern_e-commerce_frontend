@@ -33,3 +33,8 @@
 - Server side authentication and authorization implemented
 - Vercel for server site hosting
 - Firebase for client site hosting
+
+
+## Admin's credentials
+- email: admin@admin.com
+- password:  12345678

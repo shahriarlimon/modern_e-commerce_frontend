@@ -1,14 +1,13 @@
 import React, { Fragment, useRef, useState, useEffect } from "react";
 import "./LoginSignUp.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-/* import MailOutlineIcon from "@material-ui/icons/MailOutline"; */
 import { FiMail } from 'react-icons/fi'
 /* import LockOpenIcon from "@material-ui/icons/LockOpen" */;
 import { BiLockOpenAlt } from 'react-icons/bi'
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../components/overlays/Loader/Loader";
 import { FaRegUser } from 'react-icons/fa';
-import { clearErrors, login, register } from "../../../redux/actions/userAction";
+import { clearErrors, loadUser, login, register } from "../../../redux/actions/userAction";
 import { toast } from 'react-toastify';
 import axios from "axios";
 import { server } from "../../../redux/store";
@@ -40,14 +39,17 @@ const LoginSignUp = () => {
 
     const loginSubmit = async (e) => {
         e.preventDefault();
-        await axios.post(`${server}/user/login`, { email, password }, {
+        await axios.post(`${server}/user/login`, { loginEmail, loginPassword }, {
             withCredentials: true
         }).then((res) => {
-            toast.success("Login Success!")
-            navigate("/profile")
-            window.location.reload(true)
+            if (res.data.success === true) {
+                toast.success("Login Success!")
+                navigate("/profile")
+                window.location.reload(true)
+
+            }
         }).catch((error) => {
-            toast.error(error.response.data.message)
+            toast.error(error?.response?.data.message)
         })
 
 
@@ -64,14 +66,14 @@ const LoginSignUp = () => {
             },
             withCredentials: true
         }
-       
+
         await axios.post(`${server}/user/register`, user, config).then((res) => {
             toast.success("user created successfully!")
             navigate("/profile")
             window.location.reload(true)
         }).catch((error) => {
             toast.error(error.response.data.message)
-        }) 
+        })
 
     };
 
@@ -198,7 +200,7 @@ const LoginSignUp = () => {
                                         required={true}
                                         type="file"
                                         name="avatar"
-                                        accept="image/*"
+                                        accept=".jpg,.jpeg,.png"
                                         onChange={registerDataChange}
                                     />
                                 </div>
